@@ -37,6 +37,42 @@ export const NewTaskButton = styled.TouchableOpacity`
   align-items: center;
 `
 
+export const SummaryContainer = styled.View`
+  width: 100%;
+  height: 54px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: ${props => props.theme.white} */
+`
+export const SummaryItem = styled.View`
+flex-direction: row;
+`
+
+interface SummaryItemTextProps {
+  variant: 'purple' | 'blue'
+}
+
+export const SummaryItemText = styled.Text<SummaryItemTextProps>`
+
+  color: ${props => props.variant === 'purple' ? props.theme["purple-dark"] : props.theme["blue-dark"]};
+  font-weight: bold;
+  font-size: 14px;
+`
+export const SummaryItemValue = styled.View`
+  margin-right: 8px;
+  border-radius: 99px;
+  width: 25px;
+  background-color: ${props => props.theme["gray-400"]};
+  font-size: 12px;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+`
+export const SummaryItemValueText = styled.Text`
+  color: ${props => props.theme["gray-200"]};
+`
+
 export const TaskList = styled.FlatList`
   margin-top: 20px;
   

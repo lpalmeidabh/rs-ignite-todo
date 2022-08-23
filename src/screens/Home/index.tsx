@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { TextInput, Alert, Text, Image, FlatList } from "react-native";
 import { Header } from "../../components/Header";
-import { EmptyListText, HomeContainer, HomeContent, NewTaskButton, NewTaskContainer, NewTaskInput, TaskList } from "./styles";
+import { EmptyListText, HomeContainer, HomeContent, NewTaskButton, NewTaskContainer, NewTaskInput, TaskList, SummaryContainer, SummaryItem, SummaryItemText, SummaryItemValue, SummaryItemValueText } from "./styles";
 import { v4 as uuid } from 'uuid';
 import 'react-native-get-random-values'
 import plusSign from '../../assets/plus.png'
@@ -17,6 +17,20 @@ interface TaskItem {
 export function Home(){
   const [tasks, setTasks] = useState<TaskItem[]>([])
   const [newTaskInput, setNewTaskInput] = useState('')
+
+  const summary = useMemo(() => {
+    return tasks.reduce(
+      (acc, task) => {
+        if (task.isCompleted) {
+          acc.completed += 1
+        } 
+        acc.created +=1
+        return acc
+      },
+      { created: 0, completed: 0},
+    )
+    
+  }, [tasks])
 
   function handleAddTask() {
     const tempNewTask: TaskItem = {
@@ -81,9 +95,19 @@ export function Home(){
             <Image source={plusSign} />
           </NewTaskButton>
       </NewTaskContainer>
-
+      <SummaryContainer>
+        <SummaryItem>
+          <SummaryItemText variant='purple'>Criadas</SummaryItemText>
+          <SummaryItemValue ><SummaryItemValueText>{summary.created}</SummaryItemValueText></SummaryItemValue>
+        </SummaryItem>
+        <SummaryItem>
+          <SummaryItemText variant='blue'>Concluídas</SummaryItemText>
+          <SummaryItemValue><SummaryItemValueText>{summary.completed}</SummaryItemValueText></SummaryItemValue>
+        </SummaryItem>
+      </SummaryContainer>
+      
       <TaskList 
-            ListEmptyComponent={() => <EmptyListText >Ninguem chegou ao evento até o momento</EmptyListText>}
+            ListEmptyComponent={() => <EmptyListText >Você ainda não adicionou tarefas</EmptyListText>}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id}
             data={tasks}
